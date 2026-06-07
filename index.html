@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Color_Palette</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<header class="header">
+<div class="header-inner">
+  <div class="header-left">
+    <div class="logo-icon"></div>
+    <span class="logo-text">Color_Palette</span>
+  </div>
+  <div class="header-right">
+    <button class="hex-badge" id="headerHexBadge" title="클릭하여 복사">
+      <div class="hex-dot" id="headerHexDot"></div>
+      <span class="hex-badge-label" id="headerHexText">#6C9BD2</span>
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+    </button>
+
+    <button class="mobile-drawer-btn" id="drawerToggle">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+      라이브러리
+    </button>
+
+    <div class="export-wrap">
+      <button class="export-btn" id="exportBtn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <span class="export-btn-label">내보내기</span>
+      </button>
+      <div class="export-dropdown" id="exportDropdown">
+        <button id="exportCSS">CSS 변수</button>
+        <button id="exportJSON">JSON</button>
+      </div>
+    </div>
+  </div>
+</div>
+</header>
+
+<div class="mobile-drawer" id="mobileDrawer"></div>
+
+<main class="main-grid">
+  <aside class="sidebar-panel" id="pcSidebar"></aside>
+
+  <div class="center-col">
+    <div class="card wheel-card">
+      <div class="wheel-wrap">
+        <canvas id="colorWheel" width="260" height="260"></canvas>
+        <div class="wheel-thumb" id="wheelThumb"></div>
+      </div>
+      <div class="brightness-wrap">
+        <div class="brightness-track" id="brightnessTrack">
+          <div class="brightness-thumb" id="brightnessThumb"></div>
+        </div>
+        <div class="brightness-labels"><span>Dark</span><span>Light</span></div>
+      </div>
+
+      <!-- 색상 프리뷰 카드 (가는 bar 대체) -->
+      <div class="color-preview-card" id="colorPreviewCard">
+        <div class="color-preview-swatch" id="colorPreviewSwatch"></div>
+        <div class="color-preview-info">
+          <div>
+            <div class="color-preview-hex" id="colorPreviewHex">#6C9BD2</div>
+            <div class="color-preview-rgb" id="colorPreviewRgb"></div>
+          </div>
+          <button class="color-preview-copy" id="colorPreviewCopy" title="HEX 복사">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">Palette</div>
+      <div class="palette-types" id="paletteTypes"></div>
+      <div class="palette-swatches" id="paletteSwatches"></div>
+      <div class="palette-actions">
+        <button class="btn-outline" id="copyAllBtn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          Copy All
+        </button>
+        <button class="btn-solid" id="savePaletteBtn">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="m19 21-7-4-7 4V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2v16z"/><line x1="12" y1="9" x2="12" y2="15"/><line x1="9" y1="12" x2="15" y2="12"/></svg>
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card info-panel">
+    <div class="preview-row">
+      <div class="color-preview-box" id="colorPreview"></div>
+      <div class="hex-input-wrap">
+        <label class="field-label">HEX</label>
+        <input class="hex-input" id="hexInput" type="text" maxlength="7" spellcheck="false" autocomplete="off" />
+        <div class="hex-error" id="hexError">Invalid color</div>
+      </div>
+    </div>
+
+    <div class="color-values">
+      <div class="copy-row" id="rowRgb">
+        <span class="copy-label">RGB</span>
+        <span class="copy-value" id="valRgb"></span>
+        <span class="copy-hint">copy</span>
+      </div>
+      <div class="copy-row" id="rowHsl">
+        <span class="copy-label">HSL</span>
+        <span class="copy-value" id="valHsl"></span>
+        <span class="copy-hint">copy</span>
+      </div>
+      <div class="copy-row" id="rowHsb">
+        <span class="copy-label">HSB</span>
+        <span class="copy-value" id="valHsb"></span>
+        <span class="copy-hint">copy</span>
+      </div>
+      <div class="copy-row" id="rowCmyk">
+        <span class="copy-label">CMYK</span>
+        <span class="copy-value" id="valCmyk"></span>
+        <span class="copy-hint">copy</span>
+      </div>
+    </div>
+
+    <div class="wcag-section">
+      <div class="field-label" style="margin-bottom:10px">Contrast</div>
+      <div class="wcag-contrasts">
+        <div class="contrast-badge" id="contrastWhite">
+          <div class="cb-label">on White</div>
+          <div class="cb-ratio" id="ratioWhite"></div>
+        </div>
+        <div class="contrast-badge" id="contrastBlack">
+          <div class="cb-label">on Black</div>
+          <div class="cb-ratio" id="ratioBlack"></div>
+        </div>
+      </div>
+      <div class="wcag-badges">
+        <span class="wcag-badge" id="wcagAA"></span>
+        <span class="wcag-badge" id="wcagAAA"></span>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <span class="footer-copy">©Produced by You Seungoh.</span>
+    <span class="footer-links">
+      <a href="mailto:yso21@naver.com" class="footer-link">yso21@naver.com</a>
+      <span class="sep">·</span>
+      <a href="https://youtube.com/@pianocanvas" target="_blank" rel="noopener noreferrer" class="footer-link footer-yt">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+        youtube.com/@pianocanvas
+      </a>
+      <span class="sep">·</span>
+      <span class="footer-desc">healing Pop Music</span>
+    </span>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+<script src="script.js"></script>
+</body>
+</html>
